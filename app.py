@@ -2,15 +2,14 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import json
 
 @st.cache_data
 def load_data(file_path):
-    df = pd.read_csv(file_path)
+    df = pd.read_parquet(file_path)
     return df
 
-df =load_data('菜品数据分析test.csv')
+df =load_data('菜品数据分析.parquet')
 
 # Round '菜品平均价格' to 2 decimal places
 df['菜品平均价格'] = df['菜品平均价格'].round(2)

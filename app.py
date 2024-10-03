@@ -5,12 +5,12 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import json
 
-# 读取Excel文件
-file_path = '菜品数据分析test.xlsx'
-sheet_name = 'Sheet1'
+@st.cache_data
+def load_data(file_path, sheet_name):
+    df = pd.read_excel(file_path, sheet_name)
+    return df
 
-# 读取Excel数据
-df = pd.read_excel(file_path, sheet_name=sheet_name)
+df =load_data('菜品数据分析test.xlsx', 'Sheet1')
 
 # Round '菜品平均价格' to 2 decimal places
 df['菜品平均价格'] = df['菜品平均价格'].round(2)

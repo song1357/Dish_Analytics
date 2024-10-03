@@ -6,17 +6,35 @@ from plotly.subplots import make_subplots
 import json
 
 @st.cache_data
-def load_data(file_path, sheet_name):
-    df = pd.read_excel(file_path, sheet_name)
+def load_data(file_path):
+    df = pd.read_csv(file_path)
     return df
 
-df =load_data('菜品数据分析test.xlsx', 'Sheet1')
+df =load_data('菜品数据分析test.csv')
 
 # Round '菜品平均价格' to 2 decimal places
 df['菜品平均价格'] = df['菜品平均价格'].round(2)
 
+
+# 定义一个函数，将年份和小数部分的月份解析为正确的日期格式
+def parse_year_month(value):
+    try:
+        # 将年份和月份从字符串中分离
+        year, month = str(value).split('.')
+        # 创建一个新的日期字符串，例如 "2023-03-01"
+        return pd.Timestamp(year=int(year), month=int(float(month)), day=1)
+    except:
+        return pd.NaT  # 如果解析失败，返回 NaT
+
+# 应用函数，将日期列中的每个值转换为合适的日期格式
+df['日期'] = df['日期'].apply(parse_year_month)
+
 #去掉日期时间
 df['日期'] = pd.to_datetime(df['日期']).dt.date
+
+# 将百分比转换为数值形式，去掉百分比符号并转换为数值
+df['推荐数同比增长率'] = df['推荐数同比增长率'].str.replace('%', '').astype(float)
+df['推荐数环比增长率'] = df['推荐数环比增长率'].str.replace('%', '').astype(float)
 
 # 创建侧边栏页面选择
 st.sidebar.title("导航")

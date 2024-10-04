@@ -123,19 +123,20 @@ if page == "数据概览":
      #---------------------所有菜品的平均推荐数增长率--------------------------
     
      # 按日期分组，计算平均推荐数同比增长率和环比增长率
-    grouped_data_all_dishes = df.groupby('日期').agg({
-        '推荐数同比增长率': 'mean',
-        '推荐数环比增长率': 'mean'
+    grouped_data_all_dishes2 = df.groupby('日期').agg({
+        '推荐数同比增长率':'mean',
+        '推荐数环比增长率':'mean'
     }).reset_index()
-
+    
+    
     # 将同比和环比增长率四舍五入保留两位小数
-    grouped_data_all_dishes['推荐数同比增长率'] = grouped_data_all_dishes['推荐数同比增长率'].round(2)
-    grouped_data_all_dishes['推荐数环比增长率'] = grouped_data_all_dishes['推荐数环比增长率'].round(2)
+    grouped_data_all_dishes2['推荐数同比增长率'] = grouped_data_all_dishes2['推荐数同比增长率'].round(2)
+    grouped_data_all_dishes2['推荐数环比增长率'] = grouped_data_all_dishes2['推荐数环比增长率'].round(2)
 
     # ------------------折线图------------------
     # 绘制折线图，展示所有菜品的推荐数同比和环比增长率
-    fig_growth_rate_all = px.line(
-        grouped_data_all_dishes,
+    fig_growth_rate_all2 = px.line(
+        grouped_data_all_dishes2,
         x='日期',
         y=['推荐数同比增长率', '推荐数环比增长率'],
         title="所有菜品的平均推荐数同比与环比增长率趋势",
@@ -144,17 +145,18 @@ if page == "数据概览":
     )
 
     # 更新Y轴格式为百分比，并保留两位小数
-    fig_growth_rate_all.update_yaxes(tickformat=".2f")
+    fig_growth_rate_all2.update_yaxes(tickformat=".2f")
 
     # 添加悬浮标签的格式，确保显示更精确的百分比
-    fig_growth_rate_all.update_traces(
+    fig_growth_rate_all2.update_traces(
         hovertemplate='%{y:.2f}%<extra></extra>'  # 悬浮时显示百分比保留两位小数
     )
 
     # 在Streamlit中展示图表
-    st.plotly_chart(fig_growth_rate_all)
+    st.plotly_chart(fig_growth_rate_all2)
     
-        # Group the data by '省份' and calculate the average of '菜品平均价格'
+        
+    # Group the data by '省份' and calculate the average of '菜品平均价格'
     province_avg_price = df.groupby('省份')['菜品平均价格'].mean().reset_index().round(2)
     
     # 计算各省份的平均推荐数
@@ -282,10 +284,10 @@ elif page == "菜品分析":
 
     # 通过日期对相同菜品进行分组，并计算推荐数同比增长率和环比增长率的平均值
     grouped_data = filtered_data_dish.groupby('日期').agg({
-        '推荐数同比增长率': 'mean',
-        '推荐数环比增长率': 'mean'
+        '推荐数同比增长率':'mean',
+        '推荐数环比增长率':'mean'
     }).reset_index()
-
+    
     # 将增长率四舍五入保留两位小数
     grouped_data['推荐数同比增长率'] = grouped_data['推荐数同比增长率'].round(2)
     grouped_data['推荐数环比增长率'] = grouped_data['推荐数环比增长率'].round(2)

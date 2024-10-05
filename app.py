@@ -14,6 +14,9 @@ df =load_data('菜品数据分析.parquet')
 # Round '菜品平均价格' to 2 decimal places
 df['菜品平均价格'] = df['菜品平均价格'].round(2)
 
+# # 筛选平均价格大于0的数据
+# df = df[df['菜品平均价格'] > 0]
+
 
 # 定义一个函数，将年份和小数部分的月份解析为正确的日期格式
 def parse_year_month(value):
@@ -60,7 +63,7 @@ if page == "数据概览":
 
     # 创建一个带有多条Y轴的柱状图
     fig = px.bar(region_grouped, x='大区', y=['菜品推荐数', '菜品平均价格'], 
-                 title="各大区的平均推荐数和菜品平均价格",
+                 title="各大区的湘菜平均推荐数和菜品平均价格",
                  labels={'value': '数值', '大区': '大区'},
                  barmode='group')  # 设置柱状图为分组显示
 
@@ -104,7 +107,7 @@ if page == "数据概览":
         grouped_data_all_dishes,
         x='日期',
         y=['同比增长率', '环比增长率'],
-        title="所有菜品的平均价格同比与环比增长率趋势",
+        title="所有湘菜菜品的平均价格同比与环比增长率趋势",
         labels={'value': '增长率 (%)', 'variable': '增长类型'},
         markers=True
     )
@@ -139,7 +142,7 @@ if page == "数据概览":
         grouped_data_all_dishes2,
         x='日期',
         y=['推荐数同比增长率', '推荐数环比增长率'],
-        title="所有菜品的平均推荐数同比与环比增长率趋势",
+        title="所有湘菜菜品的平均推荐数同比与环比增长率趋势",
         labels={'value': '增长率 (%)', 'variable': '增长类型'},
         markers=True
     )
@@ -205,7 +208,7 @@ if page == "数据概览":
     # 展示湘菜平均推荐数分布地图
     st.plotly_chart(fig_recommendation)
     
-
+    
 
 # 页面2：按菜品类别分析
 
@@ -371,10 +374,11 @@ elif page == "菜品分析":
     # 调整平均价格地图的布局
     fig_price_map.update_layout(margin={"r":0, "t":30, "l":0, "b":10})  # 缩小地图的外边距
     st.plotly_chart(fig_price_map)
+ 
 
 # 页面3：按省份分析
 elif page == "省份分析":
-    st.title("按省份分析")
+    st.title("省份分析")
 
     province = st.selectbox("选择省份进行分析", df['省份'].unique(), key="select_province_page2")
     filtered_data_province = df[df['省份'] == province]
@@ -508,7 +512,7 @@ elif page == "省份分析":
     # 在Streamlit中展示图表
     st.plotly_chart(fig_price)
     
-
+    
 
     
 

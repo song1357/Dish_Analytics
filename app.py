@@ -125,8 +125,11 @@ if page == "数据概览":
     
      #---------------------所有菜品的平均推荐数增长率--------------------------
     
-     # 按日期分组，计算平均推荐数同比增长率和环比增长率
-    grouped_data_all_dishes2 = df.groupby('日期').agg({
+    # 去除“推荐数环比增长率”为空值的行
+    df_clean = df.dropna(subset=['推荐数环比增长率'])
+    
+    # 按日期分组，计算平均推荐数同比增长率和环比增长率
+    grouped_data_all_dishes2 = df_clean.groupby('日期').agg({
         '推荐数同比增长率':'mean',
         '推荐数环比增长率':'mean'
     }).reset_index()

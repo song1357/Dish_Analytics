@@ -287,9 +287,12 @@ elif page == "菜品分析":
     st.plotly_chart(fig_growth_rate)
     
       #---------------------特定菜品的推荐数增长率--------------------------
-
+     
+    # 去除“推荐数环比增长率”为空值的行
+    filtered_data_dish2 = filtered_data_dish.dropna(subset=['推荐数环比增长率'])
+    
     # 通过日期对相同菜品进行分组，并计算推荐数同比增长率和环比增长率的平均值
-    grouped_data = filtered_data_dish.groupby('日期').agg({
+    grouped_data = filtered_data_dish2.groupby('日期').agg({
         '推荐数同比增长率':'mean',
         '推荐数环比增长率':'mean'
     }).reset_index()
